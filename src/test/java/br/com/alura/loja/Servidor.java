@@ -12,27 +12,35 @@ public class Servidor implements ServerConfigs{
 	private URI uri;
 	private ResourceConfig config;
 
+	private HttpServer httpServer;
+	
 	public Servidor(){
 		this.uri = URI.create("http://"+SERVER+":"+PORTA+"/");
 		this.config = new ResourceConfig().packages(PATH_TO_PACKAGES);
 	}
 
-	public HttpServer createInstance(){
-		return GrizzlyHttpServerFactory.createHttpServer(uri, config);
+	public void start(){
+		this.httpServer = GrizzlyHttpServerFactory.createHttpServer(uri, config);
+	}
+	
+	public void stop(){
+		this.httpServer.stop();
 	}
 	
 	public static void main(String[] args){
 		System.out.println("Servidor rodando");
 		Servidor servidor = new Servidor();
-		HttpServer server = servidor.createInstance();
+		servidor.start();
 	    try {
 			System.in.read();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}finally{
-			server.stop();
+			servidor.stop();
 			System.out.println("Servidor parado");
 		}
 		
 	}
+	
+	
 }
