@@ -17,22 +17,24 @@ import br.com.alura.loja.resource.ProjetoResource;
 
 public class ProjetoResourceTest implements ServerConfigs {
 
-	private HttpServer httpserver;
+
+	private Servidor servidor;
 
 	@Before
 	public void init (){
-		httpserver = new Servidor().createInstance();
+		this.servidor = new Servidor();
+		this.servidor.start();
 	}
 	
 	@After
 	public void finish(){
-		httpserver.stop();
+		this.servidor.stop();
 	}
 	
 	@Test
 	public void testaQueAConexaoComOServidorFunciona() {
 		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:" + PORTA);
+		WebTarget target = client.target("http://"+Servidor.SERVER+":" +Servidor.PORTA);
 		String path = ProjetoResource.class.getAnnotation(Path.class).value();
 		ProjetoDAO projetoDAO = new ProjetoDAO();
 		Projeto p = projetoDAO.busca(1l);
