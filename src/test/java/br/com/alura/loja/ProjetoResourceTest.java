@@ -13,7 +13,7 @@ import br.com.alura.loja.dao.ProjetoDAO;
 import br.com.alura.loja.modelo.Projeto;
 import br.com.alura.loja.resource.ProjetoResource;
 
-public class ProjetoResourceTest extends ServerTest implements ServerConfigs {
+public class ProjetoResourceTest extends ServerTest  {
 
 
 	@Test
