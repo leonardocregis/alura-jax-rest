@@ -3,7 +3,7 @@ package br.com.alura.loja;
 import org.junit.After;
 import org.junit.Before;
 
-public class ServerTest {
+public class ServerTest implements ServerConfigs{
 
 	private Servidor servidor;
 
