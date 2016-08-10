@@ -1,7 +1,9 @@
 package br.com.alura.loja.modelo;
 
+import com.thoughtworks.xstream.XStream;
 
-public class Produto {
+
+public class Produto implements Convertivel{
 
 	private double preco;
 	private long id;
@@ -38,4 +40,9 @@ public class Produto {
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
+
+	public String toXML() {
+		return new XStream().toXML(this);
+	}
+	
 }
