@@ -11,7 +11,6 @@ public class Servidor implements ServerConfigs{
 
 	private URI uri;
 	private ResourceConfig config;
-
 	private HttpServer httpServer;
 	
 	public Servidor(){
@@ -24,6 +23,8 @@ public class Servidor implements ServerConfigs{
 	}
 	
 	public void stop(){
+		if (httpServer==null)
+			throw new RuntimeException("Servidor não foi iniciado");
 		this.httpServer.stop();
 	}
 	
