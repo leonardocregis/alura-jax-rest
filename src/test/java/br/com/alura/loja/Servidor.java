@@ -18,7 +18,6 @@ public class Servidor implements ServerConfigs{
 	}
 
 	public HttpServer createInstance(){
-		System.out.println("Starting server = "+this.uri.toString());
 		return GrizzlyHttpServerFactory.createHttpServer(uri, config);
 	}
 	
