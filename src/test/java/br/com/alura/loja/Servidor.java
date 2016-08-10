@@ -9,12 +9,14 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 public class Servidor {
 
+
+
 	public static void main(String[] args){
-        URI uri = URI.create("http://localhost:8099/");
-        ResourceConfig config = new ResourceConfig().packages("br.com.alura.loja");
+	    URI uri = URI.create("http://localhost:8099/");
+	    ResourceConfig config = new ResourceConfig().packages("br.com.alura.loja");
 		HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, config);
 		System.out.println("Servidor rodando");
-        try {
+	    try {
 			System.in.read();
 		} catch (IOException e) {
 			e.printStackTrace();
