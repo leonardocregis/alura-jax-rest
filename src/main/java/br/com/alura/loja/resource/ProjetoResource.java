@@ -19,6 +19,16 @@ import com.thoughtworks.xstream.XStream;
 @Path("projetos")
 public class ProjetoResource {
 
+	
+	private final  String PATH;
+
+
+	public ProjetoResource(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("/").append(ProjetoResource.class.getAnnotation(Path.class).value()).append("/");
+		this.PATH = sb.toString();
+	}
+	
 	@Path("{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -32,7 +42,7 @@ public class ProjetoResource {
 	public Response adiciona(String conteudo){
         Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
         new ProjetoDAO().adiciona(projeto);
-        URI uri = URI.create("/carrinhos/"+projeto.getId());
+        URI uri = URI.create(PATH+projeto.getId());
         return Response.created(uri).build();
 	}
 }
