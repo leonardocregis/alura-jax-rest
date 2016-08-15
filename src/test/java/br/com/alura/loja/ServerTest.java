@@ -9,6 +9,7 @@ import org.junit.Before;
 
 public class ServerTest implements ServerConfigs{
 
+	private static final String URI = "http://"+Servidor.SERVER+":" +Servidor.PORTA;
 	private Servidor servidor;
 	private WebTarget target;
 
@@ -28,10 +29,16 @@ public class ServerTest implements ServerConfigs{
 
 	protected WebTarget geraWebTarget() {
 		Client client = ClientBuilder.newClient();
-		this.target = client.target("http://"+Servidor.SERVER+":" +Servidor.PORTA);
+		this.target = client.target(URI);
 		return target;
 	}
 
+	protected WebTarget geraWebTarget(String subPath) {
+		Client client = ClientBuilder.newClient();
+		this.target = client.target(URI+"/"+subPath);
+		return target;		
+	}
+	
 	public Servidor getServidor() {
 		if (servidor == null) {
 			servidor = new Servidor();
