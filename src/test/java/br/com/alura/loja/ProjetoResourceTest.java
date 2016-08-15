@@ -1,9 +1,10 @@
 package br.com.alura.loja;
 
 import javax.ws.rs.Path;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,8 +18,7 @@ public class ProjetoResourceTest extends ServerTest  {
 
 	@Test
 	public void testaQueAConexaoComOServidorFunciona() {
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://"+Servidor.SERVER+":" +Servidor.PORTA);
+		WebTarget target = geraWebTarget();
 		String path = ProjetoResource.class.getAnnotation(Path.class).value();
 		ProjetoDAO projetoDAO = new ProjetoDAO();
 		long idProjeto = 1l;
