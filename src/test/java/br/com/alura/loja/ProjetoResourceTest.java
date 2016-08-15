@@ -29,6 +29,7 @@ public class ProjetoResourceTest extends ServerTest  {
 
 	@Test
 	public void testAdicaoDeProjeto(){
+		//TODO adicionar teste para verificar ser realmente foi inserido o projeto, atualmente nao foi possivel pois teria que reorganizar o retorno trazendo o id do projeto inserido
 		String path = ProjetoResource.class.getAnnotation(Path.class).value();
 		
 		Projeto projeto = new Projeto("Teste1", 0, 2016);
