@@ -42,7 +42,7 @@ public class ProjetoResource {
 	public Response adiciona(String conteudo){
         Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
         new ProjetoDAO().adiciona(projeto);
-        URI uri = URI.create(PATH+projeto.getId());
+        URI uri = URI.create(PATH+"/"+projeto.getId());
         return Response.created(uri).build();
 	}
 }
