@@ -13,10 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import br.com.alura.loja.dao.ProjetoDAO;
-import br.com.alura.loja.dao.ProjetoDAO;
-import br.com.alura.loja.modelo.Carrinho;
 import br.com.alura.loja.modelo.Projeto;
-import br.com.alura.loja.resource.CarrinhoResource;
 import br.com.alura.loja.resource.ProjetoResource;
 
 public class ProjetoResourceTest extends ServerTest  {
@@ -55,7 +52,7 @@ public class ProjetoResourceTest extends ServerTest  {
 		Response response = getTarget().path("/"+getPathtoResource()).request().post(entity);
 		Assert.assertEquals(response.getStatus(),201);
 		String stringResponse=  response.getHeaderString("Location");
-		long idProjeto =extraiIdProjeto(stringResponse);
+		long idProjeto =extraiId(stringResponse);
 		projeto = new ProjetoDAO().busca(new Long(idProjeto));
 		String conteudo = getTarget().path("/" + getPathtoResource()+"/"+idProjeto).request().get(String.class);
 		Assert.assertTrue(conteudo.contains(PROJETO_NOME));
@@ -68,17 +65,5 @@ public class ProjetoResourceTest extends ServerTest  {
 			this.path = getAnotationValue(ProjetoResource.class);
 		}
 		return this.path;
-	}
-
-
-
-	private long extraiIdProjeto(String stringResponse) {
-		Pattern p = Pattern.compile("/(\\d)");
-		Matcher m = p.matcher(stringResponse);
-		long idProjeto = 0;
-		if (m.find()){
-			idProjeto = Long.parseLong(m.group(1));
-		}
-		return idProjeto;
 	}
 }

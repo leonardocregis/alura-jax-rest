@@ -1,5 +1,8 @@
 package br.com.alura.loja;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -52,6 +55,16 @@ public class ServerTest implements ServerConfigs{
 			target = geraWebTarget();
 		}
 		return target;
+	}
+
+	protected long extraiId(String stringResponse) {
+		Pattern p = Pattern.compile("/(\\d)");
+		Matcher m = p.matcher(stringResponse);
+		long idProjeto = 0;
+		if (m.find()){
+			idProjeto = Long.parseLong(m.group(1));
+		}
+		return idProjeto;
 	}
 
 	
