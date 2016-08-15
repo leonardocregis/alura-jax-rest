@@ -27,4 +27,14 @@ public class ProjetoResourceTest extends ServerTest  {
 		Assert.assertTrue(conteudo.contains(p.getNome()));
 	}
 
+	@Test
+	public void testAdicaoDeProjeto(){
+		String path = ProjetoResource.class.getAnnotation(Path.class).value();
+		
+		Projeto projeto = new Projeto("Teste1", 0, 2016);
+		Entity<String> entity  = Entity.entity(projeto.toXML(),MediaType.APPLICATION_XML);
+		Response response = getTarget().path("/"+path).request().post(entity);
+		Assert.assertEquals("<status>sucesso</status>", response.readEntity(String.class));
+		
+	}
 }
