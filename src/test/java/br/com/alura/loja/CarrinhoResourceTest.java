@@ -25,7 +25,6 @@ public class CarrinhoResourceTest extends ServerTest {
 		if (this.path == null) {
 			this.path = getAnotationValue(CarrinhoResource.class);
 		}
-
 		return this.path;
 	}
 	@Test
@@ -60,7 +59,7 @@ public class CarrinhoResourceTest extends ServerTest {
 		Response response = getTarget().path("/"+getPathtoResource()).request().post(entity);
 		Assert.assertEquals(response.getStatus(),201);
 		String stringResponse=  response.getHeaderString("Location");
-		long idCarrinho =extraiIdCarrinho(stringResponse);
+		long idCarrinho =extraiId(stringResponse);
 		carrinho = new CarrinhoDAO().busca(new Long(idCarrinho));
 		String conteudo = getTarget().path("/" + getPathtoResource()+"/"+idCarrinho).request().get(String.class);
 		Assert.assertTrue(conteudo.contains(RUA_TESTE));
@@ -68,13 +67,4 @@ public class CarrinhoResourceTest extends ServerTest {
 		
 	}
 
-	private long extraiIdCarrinho(String stringResponse) {
-		Pattern p = Pattern.compile("/(\\d)");
-		Matcher m = p.matcher(stringResponse);
-		long idCarrinho = 0;
-		if (m.find()){
-			idCarrinho = Long.parseLong(m.group(1));
-		}
-		return idCarrinho;
-	}
 }
