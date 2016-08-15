@@ -28,10 +28,9 @@ public class ProjetoResource {
 	
 	@POST
 	@Produces(MediaType.APPLICATION_XML)
-	@Consumes
 	public String adiciona(String conteudo){
-        Projeto carrinho = (Projeto) new XStream().fromXML(conteudo);
-        new ProjetoDAO().adiciona(carrinho);
+        Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
+        new ProjetoDAO().adiciona(projeto);
         return "<status>sucesso</status>";
 	}
 }
