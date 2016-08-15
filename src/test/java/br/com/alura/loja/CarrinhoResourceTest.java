@@ -18,6 +18,7 @@ import br.com.alura.loja.resource.CarrinhoResource;
 
 public class CarrinhoResourceTest extends ServerTest {
 
+	private static final String RUA_TESTE = "Rua Teste";
 	private String path;
 
 	private String getPathtoResource() {
@@ -31,7 +32,6 @@ public class CarrinhoResourceTest extends ServerTest {
 	public void testaQueBuscarUmCarrinhoTrazOCarrinhoEsperado() {
 
 		WebTarget target = getTarget();
-		
 		CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
 		long idCarrinho = 1l;
 		Carrinho carrinho = carrinhoDAO.busca(idCarrinho);
@@ -53,13 +53,28 @@ public class CarrinhoResourceTest extends ServerTest {
 	
 	@Test
 	public void testAdicaoDeCarrinho(){
-		//TODO adicionar teste para verificar ser realmente foi inserido o projeto, atualmente nao foi possivel pois teria que reorganizar o retorno trazendo o id do projeto inserido
-		String path = CarrinhoResource.class.getAnnotation(Path.class).value();
 		
 		Carrinho carrinho = new Carrinho();
+		carrinho.setRua(RUA_TESTE);
 		Entity<String> entity  = Entity.entity(carrinho.toXML(),MediaType.APPLICATION_XML);
 		Response response = getTarget().path("/"+getPathtoResource()).request().post(entity);
-		Assert.assertEquals("<status>sucesso</status>", response.readEntity(String.class));
+		Assert.assertEquals(response.getStatus(),201);
+		String stringResponse=  response.getHeaderString("Location");
+		long idCarrinho =extraiIdCarrinho(stringResponse);
+		carrinho = new CarrinhoDAO().busca(new Long(idCarrinho));
+		String conteudo = getTarget().path("/" + getPathtoResource()+"/"+idCarrinho).request().get(String.class);
+		Assert.assertTrue(conteudo.contains(RUA_TESTE));
+
 		
+	}
+
+	private long extraiIdCarrinho(String stringResponse) {
+		Pattern p = Pattern.compile("/(\\d)");
+		Matcher m = p.matcher(stringResponse);
+		long idCarrinho = 0;
+		if (m.find()){
+			idCarrinho = Long.parseLong(m.group(1));
+		}
+		return idCarrinho;
 	}
 }
