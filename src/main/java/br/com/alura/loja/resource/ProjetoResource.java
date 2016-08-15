@@ -2,6 +2,7 @@ package br.com.alura.loja.resource;
 
 import java.net.URI;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -38,7 +39,7 @@ public class ProjetoResource {
 
 	
 	@POST
-	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_XML)
 	public Response adiciona(String conteudo){
         Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
         new ProjetoDAO().adiciona(projeto);
