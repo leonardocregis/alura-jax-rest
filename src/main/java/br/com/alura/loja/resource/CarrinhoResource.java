@@ -9,8 +9,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import br.com.alura.loja.dao.CarrinhoDAO;
 import br.com.alura.loja.modelo.Carrinho;
@@ -37,6 +39,8 @@ public class CarrinhoResource {
 	public String busca(@PathParam("id") long id) {
 		CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
 		Carrinho carrinho = carrinhoDAO.busca(id);
+		if (carrinho ==null)
+			throw new WebApplicationException(Status.NOT_FOUND);
 		return carrinho.toJSON();
 	}
 
@@ -54,8 +58,14 @@ public class CarrinhoResource {
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response alteraProduto(@PathParam("id") long id,@PathParam("produtoId") long produtoId, String conteudo) {
 		Carrinho carrinho = new CarrinhoDAO().busca(id);
+		if ( carrinho == null )
+			throw new WebApplicationException(Status.NOT_FOUND);
 		Produto produto = (Produto) new XStream().fromXML(conteudo);
 		carrinho.troca(produto);
 		return Response.ok().build();
 	}
+
+
+	
+	
 }
