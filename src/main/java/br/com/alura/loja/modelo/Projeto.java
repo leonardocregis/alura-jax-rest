@@ -1,8 +1,13 @@
 package br.com.alura.loja.modelo;
 
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 
+@XmlRootElement
+@XmlAccessorType
 public class Projeto implements Convertivel{
 	
 	private String nome;
