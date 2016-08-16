@@ -7,6 +7,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.junit.After;
 import org.junit.Before;
 
@@ -31,7 +33,9 @@ public class ServerTest implements ServerConfigs{
 	}
 
 	protected WebTarget geraWebTarget() {
-		Client client = ClientBuilder.newClient();
+		ClientConfig clientConfig = new ClientConfig();
+		clientConfig.register(new LoggingFilter());
+		Client client = ClientBuilder.newClient(clientConfig);
 		this.target = client.target(URI);
 		return target;
 	}
