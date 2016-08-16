@@ -46,8 +46,7 @@ public class CarrinhoResource {
 
 	@POST
 	@Produces(MediaType.APPLICATION_XML)
-	public Response adiciona(String conteudo) {
-		Carrinho carrinho = (Carrinho) new XStream().fromXML(conteudo);
+	public Response adiciona(Carrinho carrinho) {
 		new CarrinhoDAO().adiciona(carrinho);
 		URI uri = URI.create(PATH + carrinho.getId());
 		return Response.created(uri).build();
