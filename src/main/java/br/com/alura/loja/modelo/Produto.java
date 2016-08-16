@@ -1,15 +1,25 @@
 package br.com.alura.loja.modelo;
 
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Produto implements Convertivel,Serializable{
 
-public class Produto implements Convertivel{
-
+	private static final long serialVersionUID = 1L;
 	private double preco;
 	private long id;
 	private String nome;
 	private int quantidade;
+	
+	public Produto(){}
 	
 	public Produto(long id, String nome, double preco, int quantidade) {
 		this.id = id;

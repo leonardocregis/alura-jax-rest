@@ -39,8 +39,8 @@ public class CarrinhoResourceTest extends ServerTest {
 		CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
 		long idCarrinho = 1l;
 		Carrinho carrinho = carrinhoDAO.busca(idCarrinho);
-		String conteudo = target.path("/" + getPathtoResource()+"/"+idCarrinho).request().get(String.class);
-		Assert.assertTrue(conteudo.contains(carrinho.getRua()));
+		Carrinho conteudo = target.path("/" + getPathtoResource()+"/"+idCarrinho).request().get(Carrinho.class);
+		Assert.assertTrue(conteudo.getRua().equals(carrinho.getRua()));
 
 	}
 	

@@ -35,13 +35,13 @@ public class CarrinhoResource {
 
 	@Path("{id}")
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public String busca(@PathParam("id") long id) {
+	@Produces(MediaType.APPLICATION_XML)
+	public Carrinho busca(@PathParam("id") long id) {
 		CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
 		Carrinho carrinho = carrinhoDAO.busca(id);
 		if (carrinho ==null)
 			throw new WebApplicationException(Status.NOT_FOUND);
-		return carrinho.toJSON();
+		return carrinho;
 	}
 
 	@POST
