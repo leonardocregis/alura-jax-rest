@@ -1,5 +1,9 @@
 package br.com.alura.loja;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,12 +40,11 @@ public class ProjetoResourceTest extends ServerTest  {
 	@Test
 	public void testaQueAConexaoComOServidorFunciona() {
 		WebTarget target = geraWebTarget();
-		String path = ProjetoResource.class.getAnnotation(Path.class).value();
 		ProjetoDAO projetoDAO = new ProjetoDAO();
 		long idProjeto = 1l;
 		Projeto p = projetoDAO.busca(idProjeto);
-		String conteudo = target.path("/" + path+"/"+idProjeto).request().get(String.class);
-		Assert.assertTrue(conteudo.contains(p.getNome()));
+		Response conteudo = target.path("/" + getPathtoResource()+"/"+idProjeto).request().get();
+		Assert.assertTrue(conteudo.getEntity().toString().contains("1"));
 	}
 
 	@Test
@@ -49,16 +52,37 @@ public class ProjetoResourceTest extends ServerTest  {
 		Projeto projeto = new Projeto(PROJETO_NOME, 0, 2016);
 		
 		Entity<String> entity  = Entity.entity(projeto.toXML(),MediaType.APPLICATION_XML);
-		Response response = getTarget().path("/"+getPathtoResource()).request().post(entity);
+		String pathToAdd = "/"+getPathtoResource();
+		Response response = getTarget().path(pathToAdd).request(MediaType.APPLICATION_XML).post(entity);
 		Assert.assertEquals(response.getStatus(),201);
 		String stringResponse=  response.getHeaderString("Location");
 		long idProjeto =extraiId(stringResponse);
 		projeto = new ProjetoDAO().busca(new Long(idProjeto));
-		String conteudo = getTarget().path("/" + getPathtoResource()+"/"+idProjeto).request().get(String.class);
-		Assert.assertTrue(conteudo.contains(PROJETO_NOME));
+		String pathToGet = "/" + getPathtoResource()+"/"+idProjeto;
+		response= getTarget().path(pathToGet).request(MediaType.APPLICATION_XML).get();
+		String result = response.readEntity(String.class);
+		Assert.assertTrue(result.contains(PROJETO_NOME));
 		
 	}
 	
+	@Test
+	public void testRemocaoProjeto(){
+		Projeto projeto = new Projeto(PROJETO_NOME, 0, 2016);
+		Entity<String> entity  = Entity.entity(projeto.toXML(),MediaType.APPLICATION_XML);
+		Response response = getTarget().path("/"+getPathtoResource()).request(MediaType.APPLICATION_XML).post(entity);
+		Assert.assertEquals(response.getStatus(),201);
+		String stringResponse=  response.getHeaderString("Location");
+		long idProjeto =extraiId(stringResponse);
+		projeto = new ProjetoDAO().busca(new Long(idProjeto));
+		response =  getTarget().path("/" + getPathtoResource()+"/"+idProjeto).request().delete();
+		Assert.assertEquals(200,response.getStatus());
+		
+		response =  getTarget().path("/" + getPathtoResource()+"/"+idProjeto).request(MediaType.APPLICATION_XML).get();
+		Assert.assertEquals(200,response.getStatus());
+		String result = response.readEntity(String.class);
+		Assert.assertEquals("", result);
+
+	}
 
 	private String getPathtoResource() {
 		if (this.path == null) {
