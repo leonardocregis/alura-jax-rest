@@ -51,7 +51,7 @@ public class ProjetoResourceTest extends ServerTest  {
 	public void testAdicaoDeProjeto(){
 		Projeto projeto = new Projeto(PROJETO_NOME, 0, 2016);
 		
-		Entity<String> entity  = Entity.entity(projeto.toXML(),MediaType.APPLICATION_XML);
+		Entity<Projeto> entity  = Entity.entity(projeto,MediaType.APPLICATION_XML);
 		String pathToAdd = "/"+getPathtoResource();
 		Response response = getTarget().path(pathToAdd).request(MediaType.APPLICATION_XML).post(entity);
 		Assert.assertEquals(response.getStatus(),201);
@@ -68,7 +68,7 @@ public class ProjetoResourceTest extends ServerTest  {
 	@Test
 	public void testRemocaoProjeto(){
 		Projeto projeto = new Projeto(PROJETO_NOME, 0, 2016);
-		Entity<String> entity  = Entity.entity(projeto.toXML(),MediaType.APPLICATION_XML);
+		Entity<Projeto> entity  = Entity.entity(projeto,MediaType.APPLICATION_XML);
 		Response response = getTarget().path("/"+getPathtoResource()).request(MediaType.APPLICATION_XML).post(entity);
 		Assert.assertEquals(response.getStatus(),201);
 		String stringResponse=  response.getHeaderString("Location");
@@ -77,10 +77,9 @@ public class ProjetoResourceTest extends ServerTest  {
 		response =  getTarget().path("/" + getPathtoResource()+"/"+idProjeto).request().delete();
 		Assert.assertEquals(200,response.getStatus());
 		
-		response =  getTarget().path("/" + getPathtoResource()+"/"+idProjeto).request(MediaType.APPLICATION_XML).get();
+		projeto  =  getTarget().path("/" + getPathtoResource()+"/"+idProjeto).request(MediaType.APPLICATION_XML).get(Projeto.class);
 		Assert.assertEquals(200,response.getStatus());
-		String result = response.readEntity(String.class);
-		Assert.assertEquals("", result);
+		Assert.assertEquals(projeto, null);
 
 	}
 
