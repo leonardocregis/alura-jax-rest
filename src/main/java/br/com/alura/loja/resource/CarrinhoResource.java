@@ -2,8 +2,10 @@ package br.com.alura.loja.resource;
 
 import java.net.URI;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -12,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import br.com.alura.loja.dao.CarrinhoDAO;
 import br.com.alura.loja.modelo.Carrinho;
+import br.com.alura.loja.modelo.Produto;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -20,28 +23,39 @@ public class CarrinhoResource {
 
 	private final String PATH;
 
-	public CarrinhoResource(){
+	public CarrinhoResource() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("/").append(CarrinhoResource.class.getAnnotation(Path.class).value()).append("/");
+		sb.append("/")
+				.append(CarrinhoResource.class.getAnnotation(Path.class)
+						.value()).append("/");
 		this.PATH = sb.toString();
 	}
-	
-	
+
 	@Path("{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String busca(@PathParam("id") long id){
+	public String busca(@PathParam("id") long id) {
 		CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
 		Carrinho carrinho = carrinhoDAO.busca(id);
 		return carrinho.toJSON();
 	}
-	
+
 	@POST
 	@Produces(MediaType.APPLICATION_XML)
-	public Response adiciona(String conteudo){
+	public Response adiciona(String conteudo) {
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(conteudo);
-        new CarrinhoDAO().adiciona(carrinho);
-        URI uri = URI.create(PATH+carrinho.getId());
-        return Response.created(uri).build();
+		new CarrinhoDAO().adiciona(carrinho);
+		URI uri = URI.create(PATH + carrinho.getId());
+		return Response.created(uri).build();
+	}
+
+	@Path("{id}/produtos/{produtoId}")
+	@PUT
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response alteraProduto(@PathParam("id") long id,@PathParam("produtoId") long produtoId, String conteudo) {
+		Carrinho carrinho = new CarrinhoDAO().busca(id);
+		Produto produto = (Produto) new XStream().fromXML(conteudo);
+		carrinho.troca(produto);
+		return Response.ok().build();
 	}
 }
