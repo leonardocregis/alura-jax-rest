@@ -94,4 +94,26 @@ public class CarrinhoResourceTest extends ServerTest {
 		Assert.assertEquals(QUANTIDADE_CARRINHO_20,produtoCarrinho.getQuantidade());
 	}
 	
+	@Test
+	public void testAlteraCarrinhoEspecificaQuantidade(){
+		Carrinho carrinho = new Carrinho();
+		carrinho.setRua(RUA_TESTE);
+		carrinho.adiciona(new Produto(0, NOME_PRODUTO, VALOR_PRODUTO_100, QUANTIDADE_PRODUTO_10));
+
+		Entity<String> entity  = Entity.entity(carrinho.toXML(),MediaType.APPLICATION_XML);
+		Response response = getTarget().path("/"+getPathtoResource()).request().post(entity);
+		Assert.assertEquals(response.getStatus(),201);
+		String stringResponse=  response.getHeaderString("Location");
+		long idCarrinho =extraiId(stringResponse);
+		carrinho = new CarrinhoDAO().busca(new Long(idCarrinho));
+		Produto produtoCarrinho = carrinho.getProdutos().get(0);
+		produtoCarrinho.setQuantidade(QUANTIDADE_CARRINHO_20);
+		entity  = Entity.entity(carrinho.toXML(),MediaType.APPLICATION_XML);
+		response = getTarget().path("/" + getPathtoResource()+"/"+idCarrinho+"/produtos/"+produtoCarrinho.getId()+"/quantidade").request(MediaType.APPLICATION_XML).post(entity);
+		
+		carrinho = new CarrinhoDAO().busca(new Long(idCarrinho));
+		produtoCarrinho = carrinho.getProdutos().get(0);
+		Assert.assertEquals(QUANTIDADE_CARRINHO_20,produtoCarrinho.getQuantidade());		
+	}
+	
 }

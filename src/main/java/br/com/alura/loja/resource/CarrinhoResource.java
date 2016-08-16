@@ -65,7 +65,16 @@ public class CarrinhoResource {
 		return Response.ok().build();
 	}
 
-
-	
+	@PUT
+	@Path("{id}/produtos/{produtoId}/quantidade")
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response alteraQuantidadeProduto(@PathParam("id")long id, @PathParam("produtoId")long produtoId,String conteudo){
+        Carrinho carrinho = new CarrinhoDAO().busca(id);
+        if (carrinho == null)
+        	throw new WebApplicationException(Status.NOT_FOUND);
+        Produto produto = (Produto) new XStream().fromXML(conteudo);
+        carrinho.trocaQuantidade(produto);
+        return Response.ok().build();
+	}
 	
 }
