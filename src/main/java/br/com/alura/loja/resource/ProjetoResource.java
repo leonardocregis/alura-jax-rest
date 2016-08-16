@@ -9,14 +9,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.alura.loja.dao.ProjetoDAO;
 import br.com.alura.loja.modelo.Projeto;
-
-import com.thoughtworks.xstream.XStream;
 
 
 @Path("projetos")
@@ -46,8 +43,7 @@ public class ProjetoResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response adiciona(String conteudo){
-        Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
+	public Response adiciona(Projeto projeto ){
         new ProjetoDAO().adiciona(projeto);
         URI uri = URI.create(PATH+projeto.getId());
         return Response.created(uri).build();
