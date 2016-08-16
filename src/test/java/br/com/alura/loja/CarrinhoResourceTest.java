@@ -60,7 +60,7 @@ public class CarrinhoResourceTest extends ServerTest {
 		
 		Carrinho carrinho = new Carrinho();
 		carrinho.setRua(RUA_TESTE);
-		Entity<String> entity  = Entity.entity(carrinho.toXML(),MediaType.APPLICATION_XML);
+		Entity<Carrinho> entity  = Entity.entity(carrinho,MediaType.APPLICATION_XML);
 		Response response = getTarget().path("/"+getPathtoResource()).request().post(entity);
 		Assert.assertEquals(response.getStatus(),201);
 		String stringResponse=  response.getHeaderString("Location");
@@ -78,7 +78,7 @@ public class CarrinhoResourceTest extends ServerTest {
 		carrinho.setRua(RUA_TESTE);
 		carrinho.adiciona(new Produto(0, NOME_PRODUTO, VALOR_PRODUTO_100, QUANTIDADE_PRODUTO_10));
 
-		Entity<String> entity  = Entity.entity(carrinho.toXML(),MediaType.APPLICATION_XML);
+		Entity<Carrinho> entity  = Entity.entity(carrinho,MediaType.APPLICATION_XML);
 		Response response = getTarget().path("/"+getPathtoResource()).request().post(entity);
 		Assert.assertEquals(response.getStatus(),201);
 		String stringResponse=  response.getHeaderString("Location");
@@ -86,7 +86,7 @@ public class CarrinhoResourceTest extends ServerTest {
 		carrinho = new CarrinhoDAO().busca(new Long(idCarrinho));
 		Produto produtoCarrinho = carrinho.getProdutos().get(0);
 		produtoCarrinho.setQuantidade(QUANTIDADE_CARRINHO_20);
-		entity  = Entity.entity(carrinho.toXML(),MediaType.APPLICATION_XML);
+		entity  = Entity.entity(carrinho,MediaType.APPLICATION_XML);
 		response = getTarget().path("/" + getPathtoResource()+"/"+idCarrinho+"/produtos/"+produtoCarrinho.getId()).request(MediaType.APPLICATION_XML).post(entity);
 		
 		carrinho = new CarrinhoDAO().busca(new Long(idCarrinho));
@@ -100,7 +100,7 @@ public class CarrinhoResourceTest extends ServerTest {
 		carrinho.setRua(RUA_TESTE);
 		carrinho.adiciona(new Produto(0, NOME_PRODUTO, VALOR_PRODUTO_100, QUANTIDADE_PRODUTO_10));
 
-		Entity<String> entity  = Entity.entity(carrinho.toXML(),MediaType.APPLICATION_XML);
+		Entity<Carrinho> entity  = Entity.entity(carrinho,MediaType.APPLICATION_XML);
 		Response response = getTarget().path("/"+getPathtoResource()).request().post(entity);
 		Assert.assertEquals(response.getStatus(),201);
 		String stringResponse=  response.getHeaderString("Location");
@@ -108,7 +108,7 @@ public class CarrinhoResourceTest extends ServerTest {
 		carrinho = new CarrinhoDAO().busca(new Long(idCarrinho));
 		Produto produtoCarrinho = carrinho.getProdutos().get(0);
 		produtoCarrinho.setQuantidade(QUANTIDADE_CARRINHO_20);
-		entity  = Entity.entity(carrinho.toXML(),MediaType.APPLICATION_XML);
+		entity  = Entity.entity(carrinho,MediaType.APPLICATION_XML);
 		response = getTarget().path("/" + getPathtoResource()+"/"+idCarrinho+"/produtos/"+produtoCarrinho.getId()+"/quantidade").request(MediaType.APPLICATION_XML).post(entity);
 		
 		carrinho = new CarrinhoDAO().busca(new Long(idCarrinho));
