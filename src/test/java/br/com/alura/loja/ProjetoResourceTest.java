@@ -43,8 +43,8 @@ public class ProjetoResourceTest extends ServerTest  {
 		ProjetoDAO projetoDAO = new ProjetoDAO();
 		long idProjeto = 1l;
 		Projeto p = projetoDAO.busca(idProjeto);
-		Response conteudo = target.path("/" + getPathtoResource()+"/"+idProjeto).request().get();
-		Assert.assertTrue(conteudo.getEntity().toString().contains("1"));
+		p = target.path("/" + getPathtoResource()+"/"+idProjeto).request().get(Projeto.class);
+		Assert.assertTrue(p.getId()==1l);
 	}
 
 	@Test
@@ -78,8 +78,7 @@ public class ProjetoResourceTest extends ServerTest  {
 		Assert.assertEquals(200,response.getStatus());
 		
 		projeto  =  getTarget().path("/" + getPathtoResource()+"/"+idProjeto).request(MediaType.APPLICATION_XML).get(Projeto.class);
-		Assert.assertEquals(200,response.getStatus());
-		Assert.assertEquals(projeto, null);
+		Assert.assertEquals(404,response.getStatus());
 
 	}
 
