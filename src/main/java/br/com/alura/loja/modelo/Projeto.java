@@ -14,6 +14,10 @@ public class Projeto implements Convertivel{
 	long id;
 	int anoDeInicio;
 	
+	public Projeto(){
+		
+	}
+	
 	public Projeto(String nome, long id, int anoDeInicio) {
 		this.nome = nome;
 		this.id = id;
